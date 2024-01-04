@@ -1,0 +1,10 @@
+{
+  "compatibility": {
+    "public_versions": [
+      "[12.5.,)"
+    ],
+    "idev_versions": [
+      "[idev-,)"
+    ]
+  }
+}
