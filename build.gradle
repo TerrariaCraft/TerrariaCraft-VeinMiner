@@ -10,10 +10,20 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
+ext.configFile = file("build.txt")
+configFile.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse(prop)
+    project.ext.hasConfig = { key ->
+        return config.isSet(key);
+    }
+}
 
-version = "1.0"
-group = "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+
+version = config.mod_version
+group = "org.zeith.tcvm"
+archivesBaseName = "TerrariaCraftVeinMiner-${config.minecraft_version}"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
@@ -27,8 +37,8 @@ minecraft {
     
     // Terraria Craft requires stable_39 mappings.
     mappings = "stable_39"
-	
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    replace '@VERSION@', config.mod_version
 }
 
 repositories {
@@ -41,7 +51,7 @@ repositories {
 dependencies {
     
 	// Adds Terraria Craft 12.5.32 (ALONGSIDE IT'S DEPENDENCIES) into workspace
-    deobfCompile "org.zeith.terraria:TerrariaCraft-1.12.2:12.5.32"
+    deobfCompile "org.zeith.terraria:TerrariaCraft-1.12.2:${config.tc_version}"
 	
 	// Optionally, you may add Terraria Craft Recipe Viewer to make your life easier.
 	deobfCompile "org.zeith.terraria:TerrariaCraftRecipeViewer-1.12.2:5.2.8"
@@ -87,3 +97,18 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+    onlyIf {
+        System.env.MC_KS_PASS != null
+    }
+    keyStore = System.env.MC_KS_PATH
+    alias = System.env.MC_KS_ALIAS
+    storePass = System.env.MC_KS_PASS
+    keyPass = System.env.MC_KS_PASS
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+build.dependsOn signJar

@@ -29,14 +29,15 @@ import java.util.*;
 		version = TCVeinMiner.MOD_VERSION,
 		dependencies = "required-after:terraria",
 		guiFactory = "org.zeith.tcvm.client.ClientGuiFactory",
-		updateJSON = "https://api.modrinth.com/updates/SPvYoM1y/forge_updates.json"
+		updateJSON = "https://api.modrinth.com/updates/SPvYoM1y/forge_updates.json",
+		certificateFingerprint = "9f5e2a811a8332a842b34f6967b7db0ac4f24856"
 )
 public class TCVeinMiner
 		implements ITerrariaMod
 {
 	public static final String MOD_ID = "tcvm";
 	public static final String MOD_NAME = "TerrariaCraft VeinMiner";
-	public static final String MOD_VERSION = "5.2.1";
+	public static final String MOD_VERSION = "@VERSION@";
 	public static final Logger LOG = LogManager.getLogger();
 	
 	public final DeferredRegistries registries = new DeferredRegistries(this);
