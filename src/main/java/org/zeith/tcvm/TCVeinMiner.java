@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.*;
 import org.zeith.tcvm.cfg.VeinMiningConfigs;
 import org.zeith.tcvm.proxy.CommonProxy;
+import org.zeith.terraria.api.blocks.IHarvestPrevention;
 import org.zeith.terraria.api.events.*;
 import org.zeith.terraria.api.mod.ITerrariaMod;
 import org.zeith.terraria.common.data.player.*;
@@ -121,7 +122,8 @@ public class TCVeinMiner
 								{
 									if(world.getBlockState(off).equals(match))
 									{
-										BlockHarvestManager.harvestBlockByPlayer(player, world, off, true);
+										if(IHarvestPrevention.canBeHarvested(world, off))
+											BlockHarvestManager.harvestBlockByPlayer(player, world, off, true);
 										player.getEntityData().setLong("TCVM_LastVeinMine", player.world.getTotalWorldTime());
 									}
 								});
