@@ -1,4 +1,5 @@
 # eclipse
+eclipse
 bin
 *.launch
 .settings
@@ -16,7 +17,15 @@ out
 # gradle
 build
 .gradle
+*.html
+
+# Dev assets
+/run/*
 
 # other
-eclipse
-run
+*.rar
+*.jks
+~ GIT/
+PublicBuilds/
+zCFS/Bedrock2JavaAnim/
+~SubProjects/

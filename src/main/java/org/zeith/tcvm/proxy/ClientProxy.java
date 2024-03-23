@@ -46,7 +46,7 @@ public class ClientProxy
 			   && BlockHarvestManager.getCLProgress(mc.objectMouseOver.getBlockPos()) > 0
 			   && mc.gameSettings.keyBindAttack.isKeyDown()
 			   && mc.world != null
-			   && BlockWhitelist.isVeinMinable(mc.world.getBlockState(mc.objectMouseOver.getBlockPos())))
+			   && BlockWhitelist.isVeinMinable(mc.world, mc.world.getBlockState(mc.objectMouseOver.getBlockPos())))
 			{
 				String txt = I18n.format("info." + MOD_ID + ".vein_mining");
 				

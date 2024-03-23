@@ -1,28 +1,17 @@
 package org.zeith.tcvm;
 
 import com.zeitheron.hammercore.internal.variables.VariableManager;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.*;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.*;
 import org.zeith.tcvm.cfg.VeinMiningConfigs;
+import org.zeith.tcvm.init.TagsTCVM;
 import org.zeith.tcvm.proxy.CommonProxy;
-import org.zeith.terraria.api.blocks.IHarvestPrevention;
-import org.zeith.terraria.api.events.*;
 import org.zeith.terraria.api.mod.ITerrariaMod;
-import org.zeith.terraria.common.data.player.*;
-import org.zeith.terraria.common.data.world.harvest.BlockHarvestManager;
-import org.zeith.terraria.utils.ScheduledProcess;
-import org.zeith.terraria.utils.forge.DeferredRegistries;
-
-import java.util.*;
+import org.zeith.terraria.common.data.player.KeyMapTC;
 
 @Mod(
 		modid = TCVeinMiner.MOD_ID,
@@ -41,20 +30,12 @@ public class TCVeinMiner
 	public static final String MOD_VERSION = "@VERSION@";
 	public static final Logger LOG = LogManager.getLogger();
 	
-	public final DeferredRegistries registries = new DeferredRegistries(this);
-	
 	@SidedProxy(serverSide = "org.zeith.tcvm.proxy.CommonProxy", clientSide = "org.zeith.tcvm.proxy.ClientProxy")
 	public static CommonProxy proxy;
 	
 	public static final KeyMapTC.KeyButtonTC VEIN_MINE = new KeyMapTC.KeyButtonTC(new ResourceLocation(MOD_ID, "vein_mine"), (data, state) ->
 	{
 	});
-	
-	public TCVeinMiner()
-	{
-		// Used to add custom recipes
-		MinecraftForge.EVENT_BUS.register(this);
-	}
 	
 	@EventHandler
 	public void construction(FMLConstructionEvent event)
@@ -68,6 +49,7 @@ public class TCVeinMiner
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		proxy.setup();
+		TagsTCVM.init();
 	}
 	
 	@EventHandler
@@ -76,72 +58,8 @@ public class TCVeinMiner
 		BlockWhitelist.setupDefaults();
 	}
 	
-	@Override
-	public DeferredRegistries getRegistries()
+	public static ResourceLocation id(String path)
 	{
-		return registries;
-	}
-	
-	@SubscribeEvent
-	public void breakBlock(TerrariaBlockBreakEvent e)
-	{
-		if(!(e.getEntityPlayer() instanceof EntityPlayerMP)) return;
-		EntityPlayerMP player = (EntityPlayerMP) e.getEntityPlayer();
-		if(BlockWhitelist.isVeinMinable(e.getState()))
-		{
-			PlayerDataTC pd = PlayerDataTC.get(player);
-			if(pd.keyboard.isPressed(VEIN_MINE)
-			   && (!player.getEntityData().getBoolean("TCVM_VeinMineBusy")
-				   || player.world.getTotalWorldTime() - player.getEntityData().getLong("TCVM_LastVeinMine") > VeinMiningConfigs.DIG_DELAY * 2))
-			{
-				World world = e.getWorld();
-				BlockPos origin = e.getPos();
-				IBlockState match = e.getState();
-				
-				player.getEntityData().setBoolean("TCVM_VeinMineBusy", true);
-				LOG.info("Start vein mining for {}!", player);
-				
-				int maxDelay = 0;
-				List<BlockPos> positions = new ArrayList<>();
-				positions.add(e.getPos());
-				for(int i = 0; i < positions.size(); i++)
-				{
-					BlockPos cur = positions.get(i);
-					for(BlockPos off : VeinMiningConfigs.allRelatives(cur))
-					{
-						if(!positions.contains(off) && world.getBlockState(off).equals(match))
-						{
-							positions.add(off);
-							
-							if(!origin.equals(off))
-							{
-								int ticks = 1 + Math.round((float) (VeinMiningConfigs.DIG_DELAY * Math.sqrt(origin.distanceSq(off))));
-								
-								maxDelay = Math.max(maxDelay, ticks);
-								ScheduledProcess.schedule(ticks, () ->
-								{
-									if(world.getBlockState(off).equals(match))
-									{
-										if(IHarvestPrevention.canBeHarvested(world, off))
-											BlockHarvestManager.harvestBlockByPlayer(player, world, off, true);
-										player.getEntityData().setLong("TCVM_LastVeinMine", player.world.getTotalWorldTime());
-									}
-								});
-							}
-						}
-					}
-					if(positions.size() > VeinMiningConfigs.MAX_VEIN_SIZE)
-					{
-						break;
-					}
-				}
-				
-				ScheduledProcess.schedule(1 + maxDelay, () ->
-				{
-					player.getEntityData().setBoolean("TCVM_VeinMineBusy", false);
-					LOG.info("Stop vein mining for {}!", player);
-				});
-			}
-		}
+		return new ResourceLocation(MOD_ID, path);
 	}
 }
