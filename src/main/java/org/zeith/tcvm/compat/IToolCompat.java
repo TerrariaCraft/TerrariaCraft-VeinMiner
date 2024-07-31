@@ -38,6 +38,6 @@ public class IToolCompat
 	{
 		if(METHOD.getParameterCount() == 0)
 			return (int) METHOD.invoke(tool);
-		return (int) METHOD.invoke(player, stack);
+		return (int) METHOD.invoke(tool, player, stack);
 	}
 }

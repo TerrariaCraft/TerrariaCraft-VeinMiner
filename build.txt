@@ -2,7 +2,7 @@
 mod_id=tcvm
 mod_id_fancy=TerrariaCraftVeinMiner
 mod_name=TerrariaCraft VeinMiner
-mod_version=6.0.2
+mod_version=6.0.3
 author=Zeitheron
 
 #Runtime info
