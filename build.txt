@@ -2,13 +2,13 @@
 mod_id=tcvm
 mod_id_fancy=TerrariaCraftVeinMiner
 mod_name=TerrariaCraft VeinMiner
-mod_version=6.0.0
+mod_version=6.0.2
 author=Zeitheron
 
 #Runtime info
 forge_version=14.23.5.2860
 minecraft_version=1.12.2
-tc_version=12.6.1
+tc_version=12.6.2
 
 # Maven Info
 maven_group=org.zeith.terraria

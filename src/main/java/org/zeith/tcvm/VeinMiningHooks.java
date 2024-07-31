@@ -4,11 +4,13 @@ import com.zeitheron.hammercore.utils.base.Cast;
 import lombok.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.zeith.tcvm.cfg.VeinMiningConfigs;
+import org.zeith.tcvm.compat.IToolCompat;
 import org.zeith.terraria.api.blocks.IHarvestPrevention;
 import org.zeith.terraria.api.events.TerrariaBlockBreakEvent;
 import org.zeith.terraria.api.items.functional.ITool;
@@ -123,7 +125,10 @@ public class VeinMiningHooks
 					TCVeinMiner.LOG.info("Stop vein mining for {}!", player);
 				});
 				
-				int cooldown = Cast.optionally(pd.getSelectedItem().getItem(), ITool.class).map(ITool::getUseTime).orElse(0);
+				ItemStack it = pd.getSelectedItem();
+				int cooldown = Cast.optionally(it.getItem(), ITool.class)
+						.map(tool -> IToolCompat.getUseTime(tool, pd, it))
+						.orElse(0);
 				int md = (maxDelay + 1) * 3;
 				if(cooldown < md) pd.startCustomSwingAndCooldown((maxDelay + 1) * 3 + 30);
 			}
