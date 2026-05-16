@@ -1,7 +1,8 @@
 package org.zeith.tcvm;
 
 import com.zeitheron.hammercore.utils.base.Cast;
-import lombok.*;
+import lombok.Data;
+import lombok.val;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,7 @@ import org.zeith.terraria.common.data.world.harvest.BlockHarvestManager;
 import org.zeith.terraria.utils.ScheduledProcess;
 
 import java.util.*;
-import java.util.stream.*;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber
 public class VeinMiningHooks
@@ -86,7 +87,7 @@ public class VeinMiningHooks
 		if(BlockWhitelist.isVeinMinable(player.world, e.getState()))
 		{
 			PlayerDataTC pd = PlayerDataTC.get(player);
-			if(pd.keyboard.isPressed(TCVeinMiner.VEIN_MINE)
+			if(pd.keymap.isPressed(TCVeinMiner.VEIN_MINE)
 			   && (!player.getEntityData().getBoolean("TCVM_VeinMineBusy")
 				   || player.world.getTotalWorldTime() - player.getEntityData().getLong("TCVM_LastVeinMine") > VeinMiningConfigs.DIG_DELAY * 2))
 			{
@@ -112,7 +113,7 @@ public class VeinMiningHooks
 						{
 							if(IHarvestPrevention.canBeHarvested(world, off))
 							{
-								BlockHarvestManager.harvestBlockByPlayer(player, world, off, true);
+								BlockHarvestManager.harvestBlockByPlayer(pd, world, off, true);
 							}
 							player.getEntityData().setLong("TCVM_LastVeinMine", player.world.getTotalWorldTime());
 						}

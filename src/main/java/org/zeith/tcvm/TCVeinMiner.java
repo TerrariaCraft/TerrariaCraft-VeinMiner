@@ -2,16 +2,17 @@ package org.zeith.tcvm;
 
 import com.zeitheron.hammercore.internal.variables.VariableManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.*;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.zeith.tcvm.cfg.VeinMiningConfigs;
 import org.zeith.tcvm.init.TagsTCVM;
 import org.zeith.tcvm.proxy.CommonProxy;
 import org.zeith.terraria.api.mod.ITerrariaMod;
-import org.zeith.terraria.common.data.player.KeyMapTC;
+import org.zeith.terraria.common.data.player.KeyButtonTC;
 
 @Mod(
 		modid = TCVeinMiner.MOD_ID,
@@ -33,7 +34,7 @@ public class TCVeinMiner
 	@SidedProxy(serverSide = "org.zeith.tcvm.proxy.CommonProxy", clientSide = "org.zeith.tcvm.proxy.ClientProxy")
 	public static CommonProxy proxy;
 	
-	public static final KeyMapTC.KeyButtonTC VEIN_MINE = new KeyMapTC.KeyButtonTC(new ResourceLocation(MOD_ID, "vein_mine"), (data, state) ->
+	public static final KeyButtonTC VEIN_MINE = new KeyButtonTC(new ResourceLocation(MOD_ID, "vein_mine"), (data, state) ->
 	{
 	});
 	
