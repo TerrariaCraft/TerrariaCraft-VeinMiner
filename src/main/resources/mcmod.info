@@ -1,16 +1,18 @@
 [
-  {
-    "modid": "tcvm",
-    "name": "TerrariaCraft VeinMiner",
-    "description": "Enables vein mining for ores with TerrariaCraft when holding a button.",
-    "version": "${version}",
-    "mcversion": "${mcversion}",
-    "url": "https://modrinth.com/mod/terrariacraft-veinminer",
-    "updateUrl": "https://api.modrinth.com/updates/SPvYoM1y/forge_updates.json",
-    "authorList": [
-      "Zeitheron"
-    ],
-    "screenshots": [],
-    "dependencies": []
-  }
+	{
+		"modid": "tcvm",
+		"name": "TerrariaCraft VeinMiner",
+		"description": "Enables vein mining for ores with TerrariaCraft when holding a button.",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "https://modrinth.com/mod/SPvYoM1y",
+		"updateUrl": "https://api.modrinth.com/updates/SPvYoM1y/forge_updates.json",
+		"authorList": [ "Zeitheron" ],
+		"logoFile": "assets/tcvm/textures/icon.png",
+		"screenshots": [ ],
+		"dependencies": [ ],
+		"modProperties": {
+			"issueTrackerUrl": "https://github.com/TerrariaCraft/TerrariaCraft-VeinMiner/issues"
+		}
+	}
 ]

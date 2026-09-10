@@ -1,4 +1,15 @@
 {
+	"id": "tcvm",
+	"name": "TerrariaCraft VeinMiner",
+	"description": "Enables vein mining for ores with TerrariaCraft when holding a button.",
+	"authors": [ "Zeitheron" ],
+	"website": "https://modrinth.com/mod/SPvYoM1y",
+	"issues_page": "https://github.com/TerrariaCraft/TerrariaCraft-VeinMiner/issues",
+	"icon_path": "assets/tcvm/textures/icon.png",
+	"social": {
+		"discord": "https://discord.terrariacraft.com",
+		"twitter": "https://twitter.com/TerrariaCraftMC"
+	},
 	"compatibility": {
 		"public_versions": [
 		],
